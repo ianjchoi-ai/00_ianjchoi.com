@@ -4,25 +4,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ian J Choi</title>
-    <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <div class="bg-noise" aria-hidden="true"></div>
-    <header class="site-header">
-      <div class="brand">
-        <div class="name">Ian J Choi</div>
-        <div class="tagline">AI System Engineer · Notes and projects in progress</div>
-      </div>
-      <nav class="nav">
-        <a href="#about">Intro</a>
-        <a href="#notes">Notes</a>
+  <body style="margin: 0 24px;">
+    <header>
+      <img
+        src="profile.png"
+        alt="Profile photo"
+        style="float: right; max-width: 160px; height: auto; margin: 0 0 12px 16px;"
+      />
+      <h1>Ian J Choi</h1>
+      <p>AI System Engineer · Notes and projects in progress</p>
+      <p>
+        <a href="#about">Intro</a> |
+        <a href="#notes">Notes</a> |
         <a href="#projects">Projects</a>
-      </nav>
+      </p>
     </header>
 
-    <main class="content">
-      <section id="about" class="card reveal">
-        <h1>Intro</h1>
+    <main>
+      <section id="about">
+        <h2>Intro</h2>
         <p>
           I am an AI system engineer focused on reliability, data, and model
           infrastructure. This page is a lightweight hub for what I study and
@@ -30,23 +31,23 @@
         </p>
       </section>
 
-      <section id="notes" class="card reveal delay-1">
+      <section id="notes">
         <h2>Notes</h2>
         <p>
           Reading notes on AI systems, distributed training, serving, and
           evaluation. Each entry links to short, practical write-ups.
         </p>
-        <ul class="list">
+        <ul>
           <li><a href="#">Scaling training loops: data and pipeline notes</a></li>
           <li><a href="#">Serving latency budgets and trade-offs</a></li>
           <li><a href="#">Observability for ML systems</a></li>
         </ul>
-        <div class="hint">More notes coming soon.</div>
+        <p>More notes coming soon.</p>
       </section>
 
-      <section id="projects" class="card reveal delay-2">
+      <section id="projects">
         <h2>Projects</h2>
-        <ul class="list">
+        <ul>
           <li>
             <strong>LLM Ops Toolkit</strong> — deployment templates for internal
             services.
@@ -58,9 +59,9 @@
       </section>
     </main>
 
-    <footer class="site-footer">
-      <span>Contact: ian@example.com</span>
-      <span>Last updated: 2025</span>
+    <footer>
+      <p>Contact: ian@example.com</p>
+      <p>Last updated: 2025</p>
     </footer>
   </body>
 </html>
