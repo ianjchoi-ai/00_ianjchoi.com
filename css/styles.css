@@ -10,8 +10,17 @@ html, body {
 }
 
 body {
-  width: 40em;
+  width: 44em;
   margin: 0 auto;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 a {
@@ -21,6 +30,10 @@ a {
 .terminal-link {
   text-decoration: none;
   cursor: pointer;
+}
+
+.about-link {
+  color: #7fd7ff;
 }
 
 .terminal-link:hover,
@@ -34,4 +47,6 @@ a {
 pre {
   margin: 0;
   line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
