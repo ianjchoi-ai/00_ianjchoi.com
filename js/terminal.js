@@ -5,7 +5,8 @@ const welcomeOutput = [
   "",
   "+-----------------------------------------------------------------------+",
   "|                          Welcome to my site!                          |",
-  "|       I’m Ian. This is my personal website styled like a terminal.    |",
+  "|      I’m Ian. This is my personal website styled like a terminal.     |",
+  "|      Feel free to explore. Hint: try the terminal commands below.     |",
   "+-----------------------------------------------------------------------+",
   ""
 ].join("\n");
