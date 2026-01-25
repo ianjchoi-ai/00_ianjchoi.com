@@ -5,6 +5,7 @@ let currentInput = "";
 // Cache text file contents to avoid repeated fetches.
 const textCache = new Map();
 const welcomePath = "/outputs/home/welcome.txt";
+const aboutPath = "/outputs/about/about.txt";
 
 const loadTextFile = async (path) => {
   if (textCache.has(path)) {
@@ -27,26 +28,8 @@ const loadTextFile = async (path) => {
 };
 
 const getWelcomeOutput = () => loadTextFile(welcomePath);
-const aboutOutput = [
-  "",
-  "+-----------------------------------------------------------------------+",
-  "|                               About Me                                |",
-  "+-----------------------------------------------------------------------+",
-  "",
-  "Hi, I’m Ian J. Choi.",
-  "I’m a senior at Columbia University majoring in Computer Science with a minor in Mathematics.",
-  "",
-  "I built FYBCL (For Your Better College Life) — an app that helps students quickly check dining hall menus, library hours, campus events, etc, so they can spend less time clicking around and avoid walking all the way to the dining hall or library just to realize it’s closed.",
-  "",
-  "Technically, I’m deeply interested in low-level computing such as operating systems and system programming. I enjoy understanding how things actually work under the hood — memory, processes, I/O, latency — and I’m actively studying and building projects in this space.",
-  "",
-  "Before computers, there was swimming.",
-  "I’ve been swimming since I was 4, competed as a member of the South Korean national team, and later swam for a Division I team in college. These days, swimming is more of a passion than a profession, and I spend most of my training time on CrossFit and HYROX — still chasing performance, just in different arenas.",
-  "",
-  "I like building things, pushing limits, and staying curious — whether that’s in code, systems, or sport.",
-  "+-----------------------------------------------------------------------+",
-  "",
-].join("\n");
+const getAboutOutput = () => loadTextFile(aboutPath);
+
 const contactOutput = [
   "",
   "+-----------------------------------------------------------------------+",
@@ -165,7 +148,7 @@ const runCommand = async (command) => {
   }
   if (currentDir === "about") {
     if (normalized === "cat about.txt") {
-      return { output: aboutOutput, asHtml: false };
+      return { output: await getAboutOutput(), asHtml: false };
     }
     if (normalized === "cat contact.txt") {
       return { output: contactOutput, asHtml: false };
