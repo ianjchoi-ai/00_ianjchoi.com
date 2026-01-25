@@ -2,15 +2,31 @@ const terminal = document.getElementById("terminal");
 const promptUser = "ian@ianjchoi.com";
 let currentDir = "~";
 let currentInput = "";
-const welcomeOutput = [
-  "",
-  "+-----------------------------------------------------------------------+",
-  "|                          Welcome to my site!                          |",
-  "|      I’m Ian. This is my personal website styled like a terminal.     |",
-  "|        Feel free to explore. Hint: try cd, ls -l, cat command!        |",
-  "+-----------------------------------------------------------------------+",
-  ""
-].join("\n");
+// Cache text file contents to avoid repeated fetches.
+const textCache = new Map();
+const welcomePath = "/outputs/home/welcome.txt";
+
+const loadTextFile = async (path) => {
+  if (textCache.has(path)) {
+    return textCache.get(path);
+  }
+  try {
+    const response = await fetch(path, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Failed to load ${path}: ${response.status}`);
+    }
+    const text = (await response.text()).replace(/\r\n/g, "\n");
+    textCache.set(path, text);
+    return text;
+  } catch (error) {
+    console.error(error);
+    const fallback = `zsh: failed to load ${path}`;
+    textCache.set(path, fallback);
+    return fallback;
+  }
+};
+
+const getWelcomeOutput = () => loadTextFile(welcomePath);
 const aboutOutput = [
   "",
   "+-----------------------------------------------------------------------+",
@@ -46,7 +62,7 @@ const contactOutput = [
 const lsOutput_home = [
   "total 283",
   'drw-r--r-- ian staff 3887 Jan 24 00:23 about',
-  'drwxr--r-- ian staff 3887 Jan 24 00:23 thought_process',
+  'drwxr--r-- ian staff 3887 Jan 24 00:23 tech',
   'drw-r--r-- ian staff 3887 Jan 24 00:23 blog',
   "-rw-r--r-- ian staff  512 Jan 24 00:23 welcome.txt"
 ].join("\n");
@@ -55,7 +71,7 @@ const lsOutput_about = [
   '-rw-r--r-- ian staff 3887 Jan 24 00:23 about.txt',
   '-rw-r--r-- ian staff 3887 Jan 24 00:23 contact.txt'
 ].join("\n");
-const lsOutput_thought_process = [
+const lsOutput_tech = [
   "total 283",
   'drw-r--r-- ian staff 3887 Jan 24 00:23 about',
   'drw-r--r-- ian staff 3887 Jan 24 00:23 blog',
@@ -106,7 +122,7 @@ const appendOutput = (output, asHtml = false) => {
   }
 };
 
-const runCommand = (command) => {
+const runCommand = async (command) => {
   const normalized = command.trim();
 
   if (normalized === "cd ~" || normalized === "cd") {
@@ -119,7 +135,7 @@ const runCommand = (command) => {
 
   if (currentDir === "~") {
     if (normalized === "cat welcome.txt") {
-      return { output: welcomeOutput, asHtml: false };
+      return { output: await getWelcomeOutput(), asHtml: false };
     }
     if (normalized === "ls -l") {
       return { output: lsOutput_home, asHtml: false };
@@ -133,8 +149,8 @@ const runCommand = (command) => {
         currentDir = "about";
         return { output: "", asHtml: false };
       }
-      if (normalized === "cd thought_process" || normalized === "cd thought_process/") {
-        currentDir = "thought_process";
+      if (normalized === "cd tech" || normalized === "cd tech/") {
+        currentDir = "tech";
         return { output: "", asHtml: false };
       }
       if (normalized === "cd blog" || normalized === "cd blog/") {
@@ -165,9 +181,9 @@ const runCommand = (command) => {
       return { output: `cd: no such file or directory: ${normalized.slice(3)}`, asHtml: false };
     }
   }
-  if (currentDir === "thought_process") {
+  if (currentDir === "tech") {
     if (normalized === "ls -l") {
-      return { output: lsOutput_thought_process, asHtml: false };
+      return { output: lsOutput_tech, asHtml: false };
     }
     if (normalized.startsWith("cd ")) {
       if (normalized === "cd ..") {
@@ -230,7 +246,7 @@ const appendPrompt = () => {
   });
 };
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", async (event) => {
   if (isEditableTarget(event.target)) {
     return;
   }
@@ -239,7 +255,7 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault();
     const command = currentInput;
     finalizeCurrentLine();
-    const { output, asHtml } = runCommand(command);
+    const { output, asHtml } = await runCommand(command);
     appendOutput(output, asHtml);
     appendPrompt();
     return;
