@@ -11,9 +11,9 @@ const welcomeOutput = [
 ].join("\n");
 const lsOutputHtml = [
   "total 283",
-  'drw-r--r-- ian staff 3887 Jan 24 00:23 <a class="terminal-link about-link" href="about/">about</a>',
-  'drwxr--r-- ian staff 3887 Jan 24 00:23 <a class="terminal-link about-link" href="thought_process/">thought_process</a>',
-  'drw-r--r-- ian staff 3887 Jan 24 00:23 <a class="terminal-link about-link" href="blog/">blog</a>',
+  'drw-r--r-- ian staff 3887 Jan 24 00:23 about',
+  'drwxr--r-- ian staff 3887 Jan 24 00:23 thought_process',
+  'drw-r--r-- ian staff 3887 Jan 24 00:23 blog',
   "-rw-r--r-- ian staff  512 Jan 24 00:23 welcome.txt"
 ].join("\n");
 
@@ -64,7 +64,10 @@ const runCommand = (command) => {
     return { output: welcomeOutput, asHtml: false };
   }
   if (normalized === "ls -l") {
-    return { output: lsOutputHtml, asHtml: true };
+    return { output: lsOutputHtml, asHtml: false };
+  }
+  if (normalized.length > 0) {
+    return { output: `zsh: command not found: ${normalized}`, asHtml: false };
   }
   return { output: "", asHtml: false };
 };
@@ -141,3 +144,4 @@ const bootstrapInput = () => {
 };
 
 bootstrapInput();
+
