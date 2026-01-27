@@ -54,7 +54,7 @@ const lsOutput_tech = [
 ].join("\n");
 const lsOutput_HDCDW = [
   "total 330",
-  '-rw-r--r-- ian staff 383 Jan 24 00:23 00_ReadMe.txt',
+  '-rw-r--r-- ian staff 383  Jan 24 00:23 00_ReadMe.txt',
   '-rw-r--r-- ian staff 1037 Jan 24 00:23 01_structure.txt'
 ].join("\n");
 
