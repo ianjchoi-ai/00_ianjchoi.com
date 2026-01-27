@@ -8,7 +8,8 @@ const welcomePath = "/outputs/home/welcome.txt";
 const aboutPath = "/outputs/about/about.txt";
 const contactPath = "/outputs/about/contact.txt";
 
-const HowDoesCdWork = "/outputs/tech/HowDoesCdWork.txt";
+const HDCDW_00 = "/outputs/tech/HowDoesCdWork/00_ReadMe.txt";
+const HDCDW_01 = "/outputs/tech/HowDoesCdWork/01_structure.txt";
 
 const loadTextFile = async (path) => {
   if (textCache.has(path)) {
@@ -33,7 +34,8 @@ const loadTextFile = async (path) => {
 const getWelcomeOutput = () => loadTextFile(welcomePath);
 const getAboutOutput = () => loadTextFile(aboutPath);
 const getContactOutput = () => loadTextFile(contactPath);
-const getHowDoesCdWorkOutput = () => loadTextFile(HowDoesCdWork);
+const getHDCDWOutput_00 = () => loadTextFile(HDCDW_00);
+const getHDCDWOutput_01 = () => loadTextFile(HDCDW_01);
 
 const lsOutput_home = [
   "total 283",
@@ -48,7 +50,12 @@ const lsOutput_about = [
 ].join("\n");
 const lsOutput_tech = [
   "total 382",
-  '-rw-r--r-- ian staff 3887 Jan 24 00:23 HowDoesCdWork.txt',
+  'drw-r--r-- ian staff 3887 Jan 24 00:23 HowDoesCdWork',
+].join("\n");
+const lsOutput_HDCDW = [
+  "total 330",
+  '-rw-r--r-- ian staff 383 Jan 24 00:23 00_ReadMe.txt',
+  '-rw-r--r-- ian staff 1037 Jan 24 00:23 01_structure.txt'
 ].join("\n");
 
 const isEditableTarget = (target) => {
@@ -103,6 +110,11 @@ const runCommand = async (command) => {
     return { output: "", asHtml: false };
   }
 
+
+
+
+
+
   if (currentDir === "~") {
     if (normalized === "cat welcome.txt") {
       return { output: await getWelcomeOutput(), asHtml: false };
@@ -123,16 +135,18 @@ const runCommand = async (command) => {
         currentDir = "tech";
         return { output: "", asHtml: false };
       }
-      if (normalized === "cd blog" || normalized === "cd blog/") {
-        currentDir = "blog";
-        return { output: "", asHtml: false };
-      }
       if (normalized === "cd welcome.txt") {
         return { output: `cd: not a directory: ${normalized.slice(3)}`, asHtml: false };
       }
       return { output: `cd: no such file or directory: ${normalized.slice(3)}`, asHtml: false };
     }
   }
+
+
+
+
+
+
   if (currentDir === "about") {
     if (normalized === "cat about.txt") {
       return { output: await getAboutOutput(), asHtml: false };
@@ -151,16 +165,45 @@ const runCommand = async (command) => {
       return { output: `cd: no such file or directory: ${normalized.slice(3)}`, asHtml: false };
     }
   }
+
+
+
+
+
   if (currentDir === "tech") {
-    if (normalized === "cat HowDoesCdWork.txt") {
-      return { output: await getHowDoesCdWorkOutput(), asHtml: false };
-    }
     if (normalized === "ls -l") {
       return { output: lsOutput_tech, asHtml: false };
     }
     if (normalized.startsWith("cd ")) {
       if (normalized === "cd ..") {
         currentDir = "~";
+        return { output: "", asHtml: false };
+      }
+     if (normalized === "cd HowDoesCdWork" || normalized === "cd HowDoesCdWork/") {
+        currentDir = "HowDoesCdWork";
+        return { output: "", asHtml: false };
+      }
+      return { output: `cd: no such file or directory: ${normalized.slice(3)}`, asHtml: false };
+    }
+  }
+
+
+
+
+
+  if (currentDir === "HowDoesCdWork") {
+    if (normalized === "ls -l") {
+      return { output: lsOutput_tech, asHtml: false };
+    }
+    if (normalized === "cat 00_Readme.txt") {
+      return { output: await getHDCDWOutput_00(), asHtml: false };
+    }
+    if (normalized === "cat 01_structure.txt") {
+      return { output: await getHDCDWOutput_01(), asHtml: false };
+    }
+    if (normalized.startsWith("cd ")) {
+      if (normalized === "cd ..") {
+        currentDir = "tech";
         return { output: "", asHtml: false };
       }
       return { output: `cd: no such file or directory: ${normalized.slice(3)}`, asHtml: false };
