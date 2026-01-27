@@ -1,7 +1,7 @@
 
-+-----------------------------------------------------------------------+
-|                               About Me                                |
-+-----------------------------------------------------------------------+
++---------------------------------------------------------------------------------+
+|                                    About Me                                     |
++---------------------------------------------------------------------------------+
 
 Hi, I’m Ian J. Choi.
 I’m a senior at Columbia University majoring in Computer Science with a minor in Mathematics.
@@ -14,4 +14,4 @@ Before computers, there was swimming.
 I’ve been swimming since I was 4, competed as a member of the South Korean national team, and later swam for a Division I team in college. These days, swimming is more of a passion than a profession, and I spend most of my training time on CrossFit and HYROX — still chasing performance, just in different arenas.
 
 I like building things, pushing limits, and staying curious — whether that’s in code, systems, or sport.
-+-----------------------------------------------------------------------+
++---------------------------------------------------------------------------------+

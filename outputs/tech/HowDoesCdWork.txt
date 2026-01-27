@@ -1,6 +1,6 @@
 
 +---------------------------------------------------------------------------------+
-|                              How does "cd" work?                               |
+|                              How does "cd" work?                                |
 +---------------------------------------------------------------------------------+
 
 Just now, I found myself wondering how something I use every day actually works. When I use a terminal, I change directories with the cd command all the time. But how is "cd" implemented? What really happens under the hood?
