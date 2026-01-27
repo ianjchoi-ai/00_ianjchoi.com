@@ -193,9 +193,9 @@ const runCommand = async (command) => {
 
   if (currentDir === "HowDoesCdWork") {
     if (normalized === "ls -l") {
-      return { output: lsOutput_tech, asHtml: false };
+      return { output: lsOutput_HDCDW, asHtml: false };
     }
-    if (normalized === "cat 00_Readme.txt") {
+    if (normalized === "cat 00_ReadMe.txt") {
       return { output: await getHDCDWOutput_00(), asHtml: false };
     }
     if (normalized === "cat 01_structure.txt") {
