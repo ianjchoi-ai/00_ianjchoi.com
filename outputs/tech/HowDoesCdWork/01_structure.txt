@@ -3,9 +3,12 @@
 |                                  01_structure                                   |
 +---------------------------------------------------------------------------------+
 
-In this post, we'll gonna look over how cd is actually coded and the structure of it.
+In this post, we'll gonna look over how cd is actually coded and the structure of
+it.
 
-The zsh source code is publicly available on GitHub at github.com/zsh-users/zsh. On a local MacBook, the zsh lives at /bin/zsh, but this file is a compiled executable binary thus cannot be read directly.
+The zsh source code is publicly available on GitHub at github.com/zsh-users/zsh. 
+On a local MacBook, the zsh lives at /bin/zsh, but this file is a compiled 
+executable binary thus cannot be read directly.
 
 +-----------------------------------code, zsh-------------------------------------+
 |$ file /bin/zsh                                                                  |
@@ -14,9 +17,12 @@ The zsh source code is publicly available on GitHub at github.com/zsh-users/zsh.
 |/bin/zsh (for architecture x86_64):	Mach-O 64-bit executable x86_64           |
 |/bin/zsh (for architecture arm64e):	Mach-O 64-bit executable arm64e           |
 +---------------------------------------------------------------------------------+
--> "Mach-O 64-bit executable x86_64" indicates a Mach-O executable compiled for Intel 64-bit architecture that the macOS kernel can load and execute directly via exec.
+-> "Mach-O 64-bit executable x86_64" indicates a Mach-O executable compiled for
+    Intel 64-bit architecture that the macOS kernel can load and execute directly
+    via exec.
 
-The original C source code—before compilation—is available in here, github.com/zsh-users/zsh.
+The original C source code—before compilation—is available in here, 
+github.com/zsh-users/zsh.
 Let’s dive into it.
 
 1. macro
@@ -25,13 +31,18 @@ Let’s dive into it.
 static struct builtin builtins[] = 
 {
     ...,
-    BUILTIN("cd", BINF_SKIPINVALID | BINF_SKIPDASH | BINF_DASHDASHVALID, bin_cd, 0, 2, BIN_CD, "qsPL", NULL),
+    BUILTIN("cd", 
+	    BINF_SKIPINVALID | BINF_SKIPDASH | BINF_DASHDASHVALID, 
+            bin_cd, 0, 2, BIN_CD, "qsPL", NULL),
     ...
 }
 
 /* 
-We can see that BUILTIN(...) expands to a struct builtin initializer, and it is defined as a macro. We will look at the definition of struct builtin later.
-For now, let’s see how the macros BUILTIN, BINF_SKIPINVALID, BINF_SKIPDASH, BINF_DASHDASHVALID, and BIN_CD are defined.
+We can see that BUILTIN(...) expands to a struct builtin, and it is defined as a 
+macro. We will look at the definition of struct builtin later.
+For now, let’s see how the macros 
+	BUILTIN, BINF_SKIPINVALID, BINF_SKIPDASH, BINF_DASHDASHVALID, and BIN_CD 
+are defined.
 */
 
 /* Src/zsh.h line 1469, 1471, 1472 */
@@ -75,7 +86,8 @@ Therefore, the final expansion becomes:
 */
 +---------------------------------------------------------------------------------+
 
-
+2. struct builtin
++---------------------------------------------------------------------------------+
 Since this is type struct builtin, let's check out how struct builtin is defined.
 
 /* Src/zsh.h line 1440 */
@@ -90,13 +102,13 @@ struct builtin {
 };
 
 /* From this definition of struct builtin, we know that;
-{NULL, name, flags} - type: struct hashnode, name: node
-handler             - type: HandlerFunc, name: handlerfunc
-min                 - type: int, name: minargs
-max                 - type: int, name: maxargs
-funcid              - type: int, name: funcid
-optstr              - type: char *, name: optstr
-defopts             - type: char *, name: defopts
+{ NULL, "cd", (1<<12) | (1<<14) | (1<<15) } - type: struct hashnode, name: node
+bin_cd                                      - type: HandlerFunc, name: handlerfunc
+0                                           - type: int, name: minargs
+2                                           - type: int, name: maxargs
+10                                          - type: int, name: funcid
+"qsPL"                                      - type: char *, name: optstr
+NULL                                        - type: char *, name: defopts
 
 /* 정리하자면,
 1. BUILTIN("cd", BINF_SKIPINVALID | BINF_SKIPDASH | BINF_DASHDASHVALID, bin_cd, 0, 2, BIN_CD, "qsPL", NULL)
