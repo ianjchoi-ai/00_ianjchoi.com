@@ -18,11 +18,14 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+html:focus,
+html:focus-visible,
 body:focus,
 body:focus-visible,
 #terminal:focus,
 #terminal:focus-visible {
   outline: none;
+  box-shadow: none;
 }
 
 html {
