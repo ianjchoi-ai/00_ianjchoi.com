@@ -12,7 +12,6 @@ First, there is an important concept to clarify.
 The terminal itself only receives user input and displays output; it does not 
 execute commands. Command execution is handled by a shell process, in this case, 
 zsh (Z-Shell).
-(I’ll cover how Terminal.app launches the zsh in a future post.)
 
 Let’s say the user types the command "cd projects". The terminal captures the 
 input and passes it to zsh. zsh then parses and executes the command, interacting 
