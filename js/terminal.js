@@ -376,7 +376,7 @@ document.addEventListener("keydown", async (event) => {
     currentInput += event.key;
     renderInput();
   }
-});
+}, true);
 
 const moveMobileInputToPoint = (point) => {
   if (!point) return;
@@ -391,6 +391,7 @@ const focusMobileInput = (event) => {
     moveMobileInputToPoint(event);
   }
   syncMobileInput();
+  terminal.focus({ preventScroll: true });
   mobileInput.focus();
   mobileInput.click();
 };
