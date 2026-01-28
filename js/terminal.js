@@ -58,6 +58,13 @@ const lsOutput_HDCDW = [
   '-rw-r--r-- ian staff 1037 Jan 24 00:23 01_structure.txt'
 ].join("\n");
 
+const dirEntries = {
+  "~": ["about", "tech", "welcome.txt"],
+  about: ["about.txt", "contact.txt"],
+  tech: ["HowDoesCdWork"],
+  HowDoesCdWork: ["00_ReadMe.txt", "01_structure.txt"]
+};
+
 const isEditableTarget = (target) => {
   if (!target) return false;
   const tag = target.tagName;
@@ -97,6 +104,60 @@ const appendOutput = (output, asHtml = false) => {
   } else {
     terminal.insertAdjacentText("beforeend", payload);
   }
+};
+
+const getAutocompleteMatches = (input) => {
+  const trimmed = input.replace(/\s+$/, "");
+  const lastSpaceIndex = trimmed.lastIndexOf(" ");
+  if (lastSpaceIndex === -1) return [];
+  const token = trimmed.slice(lastSpaceIndex + 1);
+  const entries = dirEntries[currentDir] || [];
+  return entries.filter((entry) => entry.startsWith(token));
+};
+
+const getCommonPrefix = (values) => {
+  if (!values.length) return "";
+  let prefix = values[0];
+  for (let i = 1; i < values.length; i += 1) {
+    const value = values[i];
+    let j = 0;
+    while (j < prefix.length && j < value.length && prefix[j] === value[j]) {
+      j += 1;
+    }
+    prefix = prefix.slice(0, j);
+    if (!prefix) break;
+  }
+  return prefix;
+};
+
+const handleAutocomplete = () => {
+  const trimmed = currentInput.replace(/\s+$/, "");
+  const lastSpaceIndex = trimmed.lastIndexOf(" ");
+  if (lastSpaceIndex === -1) {
+    return;
+  }
+  const base = trimmed.slice(0, lastSpaceIndex + 1);
+  const token = trimmed.slice(lastSpaceIndex + 1);
+  const matches = getAutocompleteMatches(currentInput);
+  if (!matches.length) return;
+  if (matches.length === 1) {
+    currentInput = `${base}${matches[0]}`;
+    renderInput();
+    syncMobileInput();
+    return;
+  }
+  const commonPrefix = getCommonPrefix(matches);
+  if (commonPrefix.length > token.length) {
+    currentInput = `${base}${commonPrefix}`;
+    renderInput();
+    syncMobileInput();
+    return;
+  }
+  appendOutput(matches.join("  "));
+  appendPrompt();
+  currentInput = `${base}${token}`;
+  renderInput();
+  syncMobileInput();
 };
 
 const runCommand = async (command) => {
@@ -292,6 +353,12 @@ document.addEventListener("keydown", async (event) => {
     const { output, asHtml } = await runCommand(command);
     appendOutput(output, asHtml);
     appendPrompt();
+    return;
+  }
+
+  if (event.key === "Tab") {
+    event.preventDefault();
+    handleAutocomplete();
     return;
   }
 
