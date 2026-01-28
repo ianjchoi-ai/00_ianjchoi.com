@@ -384,14 +384,20 @@ const moveMobileInputToPoint = (point) => {
   mobileInput.style.top = `${Math.max(0, Math.floor(point.clientY))}px`;
 };
 
+const isTouchInteraction = (event) =>
+  (event?.touches && event.touches.length > 0) || event?.pointerType === "touch";
+
 const focusMobileInput = (event) => {
+  terminal.focus({ preventScroll: true });
+  if (!isTouchInteraction(event)) {
+    return;
+  }
   if (event?.touches && event.touches[0]) {
     moveMobileInputToPoint(event.touches[0]);
   } else if (event?.clientX != null && event?.clientY != null) {
     moveMobileInputToPoint(event);
   }
   syncMobileInput();
-  terminal.focus({ preventScroll: true });
   mobileInput.focus();
   mobileInput.click();
 };
